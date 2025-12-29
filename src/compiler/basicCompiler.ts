@@ -1,11 +1,5 @@
 /**
- * Basic AMPscript compiler implementation.
- *
- * Responsibilities:
- * - Validate blocks
- * - Interpolate templates
- * - Preserve execution order
- * - Produce deterministic AMPscript output
+ * Basic AMPscript compiler implementation with formatting.
  */
 
 import {
@@ -17,7 +11,6 @@ import { Compiler, CompileResult } from "./compiler";
 
 /**
  * Simple token interpolation.
- * Replaces {{token}} with values from config.
  */
 function interpolateTemplate(
   template: string,
@@ -30,6 +23,30 @@ function interpolateTemplate(
 }
 
 /**
+ * Determine indentation behavior based on AMPscript line.
+ */
+function getIndentDelta(line: string): {
+  before: number;
+  after: number;
+} {
+  const trimmed = line.trim().toUpperCase();
+
+  if (trimmed.startsWith("IF ")) {
+    return { before: 0, after: 1 };
+  }
+
+  if (trimmed === "ELSE") {
+    return { before: -1, after: 1 };
+  }
+
+  if (trimmed === "ENDIF") {
+    return { before: -1, after: 0 };
+  }
+
+  return { before: 0, after: 0 };
+}
+
+/**
  * Basic compiler implementation.
  */
 export class BasicCompiler implements Compiler {
@@ -38,7 +55,8 @@ export class BasicCompiler implements Compiler {
     registry: Record<string, BlockDefinition<any>>
   ): CompileResult {
     const errors: ValidationError[] = [];
-    const compiledLines: string[] = [];
+    const formattedLines: string[] = [];
+    let indentLevel = 0;
 
     blocks.forEach((block) => {
       const definition = registry[block.type];
@@ -59,18 +77,25 @@ export class BasicCompiler implements Compiler {
         }
       }
 
-      const line = interpolateTemplate(
+      const rawLine = interpolateTemplate(
         definition.template,
         block.config
       );
 
-      compiledLines.push(line);
+      const { before, after } = getIndentDelta(rawLine);
+
+      indentLevel = Math.max(0, indentLevel + before);
+
+      const indent = "  ".repeat(indentLevel);
+      formattedLines.push(`${indent}${rawLine}`);
+
+      indentLevel += after;
     });
 
     const ampscript =
       errors.length > 0
         ? ""
-        : `%%[\n${compiledLines.join("\n")}\n]%%`;
+        : `%%[\n${formattedLines.join("\n")}\n]%%`;
 
     return {
       ampscript,
