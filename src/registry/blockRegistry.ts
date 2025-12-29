@@ -7,6 +7,7 @@
 
 import { BlockDefinition } from "../types/builder";
 import { setBlock } from "../blocks/setBlock";
+import { lookupRowsBlock } from "../blocks/lookupRowsBlock";
 
 export type BlockRegistry = {
   [blockType: string]: BlockDefinition<any>;
@@ -14,6 +15,7 @@ export type BlockRegistry = {
 
 export const blockRegistry: BlockRegistry = {
   [setBlock.type]: setBlock,
+  [lookupRowsBlock.type]: lookupRowsBlock,
 };
 
 /**
