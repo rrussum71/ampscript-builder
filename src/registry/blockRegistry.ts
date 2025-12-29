@@ -6,17 +6,14 @@
  */
 
 import { BlockDefinition } from "../types/builder";
+import { setBlock } from "../blocks/setBlock";
 
-/**
- * A map of block definitions keyed by block type.
- *
- * Example:
- * {
- *   "ampscript.lookupRows": BlockDefinition<LookupRowsConfig>
- * }
- */
 export type BlockRegistry = {
   [blockType: string]: BlockDefinition<any>;
+};
+
+export const blockRegistry: BlockRegistry = {
+  [setBlock.type]: setBlock,
 };
 
 /**
