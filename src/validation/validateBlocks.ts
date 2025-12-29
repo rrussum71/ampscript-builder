@@ -5,7 +5,7 @@
  * catch issues individual blocks cannot detect.
  */
 
-import { BuilderBlock, BlockDefinition, ValidationError } from "../types/builder";
+import { validateControlFlow } from "./controlFlowValidation";
 
 /**
  * Validate duplicate AMPscript variables across blocks.
@@ -83,5 +83,6 @@ export function validateBlocks(
     ...validateNotEmpty(blocks),
     ...validateBlockTypes(blocks, registry),
     ...validateDuplicateVariables(blocks),
+    ...validateControlFlow(blocks),
   ];
 }
