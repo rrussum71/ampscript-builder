@@ -10,6 +10,7 @@ import { setBlock } from "../blocks/setBlock";
 import { lookupRowsBlock } from "../blocks/lookupRowsBlock";
 import { rowCountBlock } from "../blocks/rowCountBlock";
 import { rowBlock } from "../blocks/rowBlock";
+import { fieldBlock } from "../blocks/fieldBlock";
 
 export type BlockRegistry = {
   [blockType: string]: BlockDefinition<any>;
@@ -20,6 +21,7 @@ export const blockRegistry: BlockRegistry = {
   [lookupRowsBlock.type]: lookupRowsBlock,
   [rowCountBlock.type]: rowCountBlock,
   [rowBlock.type]: rowBlock,
+  [fieldBlock.type]: fieldBlock,
 };
 
 /**
