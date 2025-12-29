@@ -11,6 +11,9 @@ import { lookupRowsBlock } from "../blocks/lookupRowsBlock";
 import { rowCountBlock } from "../blocks/rowCountBlock";
 import { rowBlock } from "../blocks/rowBlock";
 import { fieldBlock } from "../blocks/fieldBlock";
+import { ifBlock } from "../blocks/ifBlock";
+import { elseBlock } from "../blocks/elseBlock";
+import { endIfBlock } from "../blocks/endifBlock";
 
 export type BlockRegistry = {
   [blockType: string]: BlockDefinition<any>;
@@ -22,6 +25,9 @@ export const blockRegistry: BlockRegistry = {
   [rowCountBlock.type]: rowCountBlock,
   [rowBlock.type]: rowBlock,
   [fieldBlock.type]: fieldBlock,
+  [ifBlock.type]: ifBlock,
+  [elseBlock.type]: elseBlock,
+  [endIfBlock.type]: endIfBlock,
 };
 
 /**
